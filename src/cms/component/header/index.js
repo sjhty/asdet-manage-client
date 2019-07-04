@@ -17,7 +17,7 @@ class Header extends Component {
     }
 
     render () {
-        const { menuName, menuType } = this.props;
+        const { menuName } = this.props;
         return (
             <Row className="main_header">
                 <Col className="header_con">

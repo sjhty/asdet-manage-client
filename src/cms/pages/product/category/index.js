@@ -1,10 +1,68 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { Card, Button, Table, Modal } from 'antd'
+import BaseForm from '../../../component/baseForm'
+import './index.less'
 
 class Category extends Component {
+
+    state = {
+        visible: false
+    }
+
+    addFormFields = [
+        {type: 'INPUT', label: '分类名称', field: 'name', placeholder: '请输入分类名称'},
+        {type: 'INPUT', label: '零售价', field: 'price', placeholder: '请输入零售价'},
+        {type: 'INPUT', label: 'VIP售价(课长)', field: 'vip_price', placeholder: '请输入VIP售价'},
+        {type: 'INPUT', label: '部长售价', field: 'minister_price', placeholder: '请输入部长售价'},
+        {type: 'INPUT', label: '理事售价', field: 'director_price', placeholder: '请输入理事售价'},
+        {type: 'INPUT', label: '社长售价', field: 'president_price', placeholder: '请输入社长售价'},
+        {type: 'BUTTON', label: '添加', className: 'add_btn'}
+    ]
+
     render () {
+        const columns = [
+            {title: '名称',dataIndex: 'name',align: 'center'},
+            {title: '零售价',dataIndex: 'price',align: 'center'},
+            {title: 'VIP售价(课长)',dataIndex: 'vip_price',align: 'center'},
+            {title: '部长售价',dataIndex: 'minister_price',align: 'center'},
+            {title: '理事售价',dataIndex: 'director_price',align: 'center'},
+            {title: '社长售价',dataIndex: 'president_price',align: 'center'},
+            {title: '创建时间',dataIndex: 'created_at',align: 'center'},
+            {title: '操作',dataIndex: 'action',align: 'center',render: () => <Button type="link">修改</Button>},
+        ];
+        const dataSource = [
+            {_id: 1, name:"樱桃裤",price: 208, vip_price: 198, minister_price: 158, director_price: 128, president_price: 98, created_at: "2019-07-04 15:51:28"},
+            {_id: 2, name:"樱桃裤",price: 208, vip_price: 198, minister_price: 158, director_price: 128, president_price: 98, created_at: "2019-07-04 15:51:28"}
+        ];
         return (
-            <div>分类页</div>
+            <Fragment>
+                <Card title="商品分类" extra={<Button type="primary" onClick={ () => { this.showModal() }} size="small" icon="plus">添加</Button>}>
+                    <Table dataSource={dataSource} columns={columns} rowKey="_id"/>
+                </Card>
+                <Modal title="添加商品分类" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel} footer={null}>
+                    <BaseForm formFields={ this.addFormFields }/>
+                </Modal>
+            </Fragment>
         )
+    }
+
+    //显示modal表单弹框
+    showModal = () => {
+        this.setState({
+          visible: true
+        })
+    }
+
+    handleOk = (e) => {
+        this.setState({
+          visible: false,
+        });
+    }
+
+    handleCancel = (e) => {
+        this.setState({
+            visible: false,
+        });
     }
 }
 
