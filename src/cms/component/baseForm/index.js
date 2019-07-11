@@ -4,6 +4,18 @@ import Utils from '../../../utils'
 const FormItem = Form.Item
 
 class BaseForm extends Component {
+
+    handleFilterSubmit = () => {
+        this.props.form.validateFields( (err,value) => {
+            if (!err) {
+                this.props.filterSubmit(value);
+            } else {
+                console.log("校验失败")
+            }
+        })
+        
+    }
+
     initForm = () => {
         const { getFieldDecorator } = this.props.form;
         const formFields = this.props.formFields;

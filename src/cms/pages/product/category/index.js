@@ -1,12 +1,18 @@
 import React, { Component, Fragment } from 'react'
 import { Card, Button, Table, Modal } from 'antd'
+import Api from '../../../../axios/api'
 import BaseForm from '../../../component/baseForm'
+import { message } from 'antd'
 import './index.less'
 
 class Category extends Component {
 
     state = {
         visible: false
+    }
+
+    componentWillMount() {
+        
     }
 
     addFormFields = [
@@ -40,7 +46,7 @@ class Category extends Component {
                     <Table dataSource={dataSource} columns={columns} rowKey="_id"/>
                 </Card>
                 <Modal title="添加商品分类" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel} footer={null}>
-                    <BaseForm formFields={ this.addFormFields }/>
+                    <BaseForm formFields={ this.addFormFields } filterSubmit={ this.handleSubmit }/>
                 </Modal>
             </Fragment>
         )
@@ -63,6 +69,18 @@ class Category extends Component {
         this.setState({
             visible: false,
         });
+    }
+
+    handleSubmit = async (fields) => {
+        const result = await Api.addCategory(fields);
+        if ( result.success === true ) {
+            message.success("分类添加成功");
+            this.setState({
+                visible: false
+            });
+        } else {
+            message.error(result.message)
+        }
     }
 }
 
