@@ -13,7 +13,7 @@ export default function request( url, data = {}, method) {
         }
 
         promise.then( response => {
-            console.log("response",response)
+            //console.log("response",response)
             resolve( response.data )
         }).catch( error => {
             message.error( "请求出错了" + error.message )

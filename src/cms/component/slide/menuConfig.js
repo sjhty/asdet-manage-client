@@ -33,7 +33,7 @@ const menuList = [
             },
             {
                 title: '商品分类',
-                url: '/manage/product/category/list',
+                url: '/manage/products/category/',
                 icon: ''
             },
             {

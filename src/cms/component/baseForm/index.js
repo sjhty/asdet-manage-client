@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, Select, Button } from 'antd'
+import { Form, Input, Select, Button, Upload, Icon } from 'antd'
 import Utils from '../../../utils'
 const FormItem = Form.Item
 
@@ -7,16 +7,18 @@ class BaseForm extends Component {
 
     handleFilterSubmit = () => {
         this.props.form.validateFields( (err,value) => {
+            console.log("value",value)
             if (!err) {
-                this.props.filterSubmit(value);
+                this.props.filterSubmit(value, this);
+                //this.props.form.resetFields();
             } else {
                 console.log("校验失败")
             }
         })
-        
     }
 
     initForm = () => {
+        //this.props.form.resetFields();
         const { getFieldDecorator } = this.props.form;
         const formFields = this.props.formFields;
         const formFieldList = [];
@@ -26,6 +28,9 @@ class BaseForm extends Component {
                 let field = item.field;  //表单字段名称
                 let placeholder = item.placeholder;
                 let className = item.className;
+                let value = item.value;
+                let width = item.width;
+                let disabled = item.disabled;
 
                 if (item.type === 'INPUT') {
                     const INPUT = <FormItem label={label} key={field}>
@@ -33,22 +38,25 @@ class BaseForm extends Component {
                             getFieldDecorator(field,{
                                 rules:[
                                     { required: true, message: '不能为空'}
-                                ]
+                                ],
+                                initialValue: value
                             })(
-                                <Input placeholder={placeholder}/>
+                                <Input placeholder={placeholder} className={ className }/>
                             )
                         }
                     </FormItem>
                     formFieldList.push(INPUT);
+
                 } else if (item.type === 'SELECT') {
                     const SELECT = <FormItem label={label} key={field}>
                         {
                             getFieldDecorator(field,{
                                 rules:[
                                     { required: true, message: '请选择'}
-                                ]
+                                ],
+                                initialValue: value
                             })(
-                                <Select key={field}>
+                                <Select key={field} style={{width:width}}>
                                     {
                                         Utils.getOptionList(item.list)
                                     }
@@ -62,6 +70,28 @@ class BaseForm extends Component {
                         <Button type="primary" style={{ marginRight: "10px" }} onClick={this.handleFilterSubmit}>{label}</Button>
                     </FormItem>
                     formFieldList.push(BUTTON);
+                } else if (item.type === 'UPLOAD') {
+                    let env = process.env.NODE_ENV,uploadUrl=''; 
+                    if (env === 'development') {
+                        uploadUrl = 'http://127.0.0.1:7001/asdet/api/upload';
+                    } else {
+                        uploadUrl = 'http://49.234.12.142:7001/asdet/api/upload';
+                    }
+                    const UPLOAD = <FormItem key={field} label={label}>
+                        {
+                            getFieldDecorator(field, {
+                                valuePropName: 'fileList',
+                                getValueFromEvent: this.normFile
+                            })(
+                                <Upload name="logo" action={uploadUrl} listType="picture" disabled={disabled}> 
+                                    <Button>
+                                        <Icon type="upload" /> 点击上传
+                                    </Button>
+                                </Upload>
+                            )
+                        }
+                    </FormItem>
+                    formFieldList.push(UPLOAD);
                 }
             })
         }
