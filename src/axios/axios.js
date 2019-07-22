@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { message } from 'antd'
 
+axios.defaults.headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
+
 export default function request( url, data = {}, method) {
     return new Promise((resolve,reject) => {
         let promise;

@@ -21,19 +21,19 @@ const menuList = [
         url: '/manage/products',
         icon: 'barcode',
         children: [
+            // {
+            //     title: '添加商品',
+            //     url: '/manage/products/add',
+            //     icon: ''
+            // },
             {
-                title: '添加商品',
-                url: '/manage/products/add',
+                title: '商品分类',
+                url: '/manage/products/category/',
                 icon: ''
             },
             {
                 title: '商品列表',
                 url: '/manage/products/list',
-                icon: ''
-            },
-            {
-                title: '商品分类',
-                url: '/manage/products/category/',
                 icon: ''
             },
             {

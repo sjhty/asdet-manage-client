@@ -11,12 +11,16 @@ const findCategory = () => axios( '/api/category/find', 'POST');
 const addProduct = ( product) => axios( '/api/products/add', product, 'POST');
 const findProduct = () => axios( '/api/products/find', 'POST');
 
+//upload
+const upload = () => axios( '/api/upload', 'POST');
+
 const asdetApi = {
     addUser,
     addCategory,
     findCategory,
     addProduct,
-    findProduct
+    findProduct,
+    upload
 }
 
 export default asdetApi

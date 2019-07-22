@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Input, Select, Button, Upload, Icon } from 'antd'
+import Api from '../../../axios/api'
 import Utils from '../../../utils'
 const FormItem = Form.Item
 
@@ -15,6 +16,14 @@ class BaseForm extends Component {
                 console.log("校验失败")
             }
         })
+    }
+
+    normFile = (e) => {
+        console.log('Upload event:', e);
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e && e.fileList;
     }
 
     initForm = () => {
@@ -71,19 +80,19 @@ class BaseForm extends Component {
                     </FormItem>
                     formFieldList.push(BUTTON);
                 } else if (item.type === 'UPLOAD') {
-                    let env = process.env.NODE_ENV,uploadUrl=''; 
-                    if (env === 'development') {
-                        uploadUrl = 'http://127.0.0.1:7001/asdet/api/upload';
-                    } else {
-                        uploadUrl = 'http://49.234.12.142:7001/asdet/api/upload';
-                    }
+                    // let env = process.env.NODE_ENV,uploadUrl=''; 
+                    // if (env === 'development') {
+                    //     uploadUrl = 'http://127.0.0.1:7001/api/upload';
+                    // } else {
+                    //     uploadUrl = 'http://49.234.12.142:7001/asdet/api/upload';
+                    // }
                     const UPLOAD = <FormItem key={field} label={label}>
                         {
                             getFieldDecorator(field, {
                                 valuePropName: 'fileList',
                                 getValueFromEvent: this.normFile
                             })(
-                                <Upload name="logo" action={uploadUrl} listType="picture" disabled={disabled}> 
+                                <Upload name="logo" action={Api.upload} listType="picture" disabled={disabled}> 
                                     <Button>
                                         <Icon type="upload" /> 点击上传
                                     </Button>
